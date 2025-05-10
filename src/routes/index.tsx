@@ -1,8 +1,7 @@
 import MainLayout from "@/pages/layout";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-
-const SettingPage = lazy(() => import("@/pages/setting/main"));
+import { SettingPage } from "./content";
 
 const Router = createBrowserRouter([
   {
