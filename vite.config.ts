@@ -18,7 +18,6 @@ export default defineConfig(({mode}) => {
         "@": path.resolve(__dirname, "./src"),
         "@pages": path.resolve(__dirname, "./src/pages"),
         "@components": path.resolve(__dirname, "./src/components"),
-        "@core": path.resolve(__dirname, "./src/core"),
         "@hooks": path.resolve(__dirname, "./src/hooks"),
       },
     },

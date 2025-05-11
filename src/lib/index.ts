@@ -10,5 +10,5 @@ export const EMAIL = "email";
 
 // Bearer Token - JWT
 export const BEARER_TOKEN =
-  sessionStorage.getItem("token") ??
+  sessionStorage.getItem(TOKEN) ??
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTg3LCJpYXQiOjE3NDY4NzI0ODYsImV4cCI6MTc0OTQ2NDQ4Nn0.MpYSRsUwkAGrB9qTvB5rx8BmWi7IPxw4UNnexG_kbDM";

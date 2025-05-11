@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/core/constant";
+import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/lib";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 
 export default function MainLayout() {

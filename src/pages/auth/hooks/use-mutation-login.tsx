@@ -1,10 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
-import type { LoginResponse, PayloadLogin } from "../lib/model";
-import type { HttpResponse } from "@/core/model/http-reponse";
+import type { AuthResponse, PayloadLogin } from "../lib/model";
+import type { HttpResponse } from "@/lib/http-reponse";
 import { useToast } from "@/hooks/use-toast";
 import { apiAuth } from "@/hooks/api-auth";
 import { useNavigate } from "react-router-dom";
-import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/core/constant";
+import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/lib";
 
 export default function useMutationLogin() {
   const { toast } = useToast();
@@ -17,7 +17,7 @@ export default function useMutationLogin() {
       formData.append("identifier", payload.identifier);
       formData.append("password", payload.password);
 
-      const response: HttpResponse<LoginResponse> = await apiAuth.post(
+      const response: HttpResponse<AuthResponse> = await apiAuth.post(
         "/auth/local",
         formData,
         {

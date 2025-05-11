@@ -1,4 +1,4 @@
-import { BEARER_TOKEN } from "@/core/constant";
+import { BEARER_TOKEN } from "@/lib";
 import axios from "axios";
 
 export const apiAuth = axios.create({

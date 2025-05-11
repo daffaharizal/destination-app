@@ -2,8 +2,8 @@ import { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../pages/layout";
 import { DashboardPage, LoginPage, RegisterPage } from "./content";
-import ProtectedRoute from "@/components/auth/protected-route";
-import RedirectIfAuthenticated from "@/components/auth/redirect-if-authenticated";
+import ProtectedRoute from "@/pages/auth/components/protected-route";
+import RedirectIfAuthenticated from "@/pages/auth/components/redirect-if-authenticated";
 
 const WithSuspense = (Component: React.ReactNode) => (
   <Suspense fallback={<div>Loading...</div>}>{Component}</Suspense>

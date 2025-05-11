@@ -1,7 +1,7 @@
 import { FloatingLabelInput } from "@/components/molecules/floating-label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import useMutationLogin from "./hooks/use-mutation-login";
+import useMutationLogin from "../auth/hooks/use-mutation-login";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { ToastAction } from "@/components/ui/toast";

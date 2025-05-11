@@ -1,4 +1,4 @@
-import { ID_USER, TOKEN } from "@/core/constant";
+import { ID_USER, TOKEN } from "@/lib";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 

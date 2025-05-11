@@ -3,7 +3,13 @@ export interface PayloadLogin {
   password: string;
 }
 
-export interface LoginResponse {
+export interface PayloadRegister {
+  email: string;
+  username: string;
+  password: string;
+}
+
+export interface AuthResponse {
   jwt: string;
   user: User;
 }
