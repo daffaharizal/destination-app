@@ -4,24 +4,17 @@ import { useState } from "react";
 import useMutationLogin from "../auth/hooks/use-mutation-login";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-
-  const navigate = useNavigate();
-  const { toast } = useToast();
 
   const { login, isErrorLogin, isPendingLogin, isSuccessLogin } =
     useMutationLogin();
 
   const handleAuthentication = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    login({ identifier, password })
-      // .finally(() => {
-      //   navigate("/");
-      // });
+    login({ identifier, password });
   };
 
   return (

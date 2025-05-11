@@ -3,8 +3,8 @@ import type { HttpResponse } from "@/lib/http-reponse";
 import { useToast } from "@/hooks/use-toast";
 import { apiAuth } from "@/hooks/api-auth";
 import { useNavigate } from "react-router-dom";
-import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/lib";
 import type { AuthResponse, PayloadRegister } from "../lib/model";
+import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/lib";
 
 export default function useMutationRegister() {
   const { toast } = useToast();
@@ -14,10 +14,12 @@ export default function useMutationRegister() {
     mutationKey: ["post-login"],
     mutationFn: async (payload: PayloadRegister) => {
       const formData = new URLSearchParams();
+      formData.append("email", payload.email);
+      formData.append("username", payload.username);
       formData.append("password", payload.password);
 
       const response: HttpResponse<AuthResponse> = await apiAuth.post(
-        "/auth/local",
+        "/auth/local/register",
         formData,
         {
           headers: {
@@ -26,7 +28,6 @@ export default function useMutationRegister() {
         }
       );
 
-      console.log("response login: ", response.data);
       return response.data;
     },
     onError: (error) => {
@@ -38,7 +39,7 @@ export default function useMutationRegister() {
     },
     onSuccess(data) {
       toast({
-        title: "Login Successful",
+        title: "Register Successful",
         description: "Congratulations! You have successfully signed in.",
         variant: "success",
       });
@@ -55,9 +56,9 @@ export default function useMutationRegister() {
   });
 
   return {
-    login: mutateAsync,
-    isPendingLogin: isPending,
-    isErrorLogin: isError,
-    isSuccessLogin: isSuccess,
+    register: mutateAsync,
+    isPendingRegister: isPending,
+    isErrorRegister: isError,
+    isSuccessRegister: isSuccess,
   };
 }

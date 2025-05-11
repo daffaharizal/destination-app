@@ -1,13 +1,20 @@
 import { FloatingLabelInput } from "@/components/molecules/floating-label";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import useMutationRegister from "./hooks/use-mutation-register";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const handleSubmitRegister = () => {};
+  const { register, isErrorRegister, isPendingRegister, isSuccessRegister } =
+    useMutationRegister();
+
+  const handleSubmitRegister = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    register({email, username, password});
+  };
 
   return (
     <form
