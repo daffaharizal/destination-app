@@ -1,13 +1,24 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
+    "target": "ES6",
+    "lib": ["ES2020", "DOM"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "strict": true,
+    "noEmit": true,
+    "baseUrl": "./src",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["*"],
+      "@pages/*": ["pages/*"],
+      "@components/*": ["components/*"],
+      "@core/*": ["core/*"],
+      "@hooks/*": ["hooks/*"]
     }
   },
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist", "build", "coverage", "public"]
 }
