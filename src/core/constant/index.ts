@@ -2,10 +2,11 @@
 export const API_BASE_URL = import.meta.env.VITE_BASE_URL;
 
 // User Credentials
+export const TOKEN = "jwtToken";
 export const ID_USER = "idUser";
 export const USERNAME = "username";
 export const DOCUMENT_ID = "documentId";
-export const EMAIL = "emailUser";
+export const EMAIL = "email";
 
 // Bearer Token - JWT
 export const BEARER_TOKEN =

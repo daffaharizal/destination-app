@@ -4,6 +4,7 @@ import type { HttpResponse } from "@/core/model/http-reponse";
 import { useToast } from "@/hooks/use-toast";
 import { apiAuth } from "@/hooks/api-auth";
 import { useNavigate } from "react-router-dom";
+import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/core/constant";
 
 export default function useMutationLogin() {
   const { toast } = useToast();
@@ -44,11 +45,11 @@ export default function useMutationLogin() {
       });
 
       // Simpan token ke sessionStorage di sini
-      sessionStorage.setItem("token", data.jwt);
-      sessionStorage.setItem("idUser", data.user.id.toString());
-      sessionStorage.setItem("documentId", data.user.documentId);
-      sessionStorage.setItem("username", data.user.username);
-      sessionStorage.setItem("emailUser", data.user.email);
+      sessionStorage.setItem(TOKEN, data.jwt);
+      sessionStorage.setItem(ID_USER, data.user.id.toString());
+      sessionStorage.setItem(DOCUMENT_ID, data.user.documentId);
+      sessionStorage.setItem(USERNAME, data.user.username);
+      sessionStorage.setItem(EMAIL, data.user.email);
 
       navigate("/");
     },
