@@ -1,5 +1,6 @@
 // Integration API (Axios & Tanstack Query)
 export const API_BASE_URL = import.meta.env.VITE_BASE_URL;
+export const IMAGE_LINK_DATACAKRA = "https://datacakra.com/wp-content/uploads/elementor/thumbs/Datacakra_Logo-oudk36detz0vvj5b2z5ktg264m2cyxvl0ci12imx8s.png";
 
 // User Credentials
 export const TOKEN = "jwtToken";
