@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../pages/layout";
-import { DashboardPage, LoginPage, RegisterPage } from "./content";
+import { ArticlesPage, DashboardPage, LoginPage, RegisterPage } from "./content";
 import ProtectedRoute from "@/pages/auth/components/protected-route";
 import RedirectIfAuthenticated from "@/pages/auth/components/redirect-if-authenticated";
 
@@ -21,6 +21,10 @@ const Router = createBrowserRouter([
           {
             path: "dashboard",
             element: WithSuspense(<DashboardPage />),
+          },
+          {
+            path: "articles",
+            element: WithSuspense(<ArticlesPage />),
           },
         ],
       },

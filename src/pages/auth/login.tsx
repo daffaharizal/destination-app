@@ -19,7 +19,7 @@ export default function LoginPage() {
 
   return (
     <form
-      className="flex flex-col gap-3 justify-center items-center"
+      className="flex flex-col gap-3 justify-center items-center h-screen w-full !bg-white"
       onSubmit={handleAuthentication}
     >
       <FloatingLabelInput

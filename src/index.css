@@ -35,10 +35,10 @@ a:hover {
 body {
   margin: 0;
   display: flex;
+  background-color: #eaf1fb;
   place-items: center;
   min-width: 360px;
   min-height: 100vh;
-  background-color: #eaf1fb;
 }
 
 h1 {
