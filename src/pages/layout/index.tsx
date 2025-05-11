@@ -6,13 +6,7 @@ export default function MainLayout() {
   const navigate = useNavigate();
   
   const handleLogoutAuthentication = () => {
-    // Delete credetial user in Session Storage
-    sessionStorage.removeItem(TOKEN);
-    sessionStorage.removeItem(ID_USER);
-    sessionStorage.removeItem(DOCUMENT_ID);
-    sessionStorage.removeItem(USERNAME);
-    sessionStorage.removeItem(EMAIL);
-
+    sessionStorage.clear();
     navigate("login");
   }
   
