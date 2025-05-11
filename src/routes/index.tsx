@@ -1,7 +1,11 @@
-import MainLayout from "@/pages/layout";
 import { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
-import { SettingPage } from "./content";
+import MainLayout from "../pages/layout";
+import { DashboardPage, LoginPage, RegisterPage } from "./content";
+
+const WithSuspense = (Component: React.ReactNode) => (
+  <Suspense fallback={<div>Loading...</div>}>{Component}</Suspense>
+);
 
 const Router = createBrowserRouter([
   {
@@ -9,14 +13,18 @@ const Router = createBrowserRouter([
     element: <MainLayout />,
     children: [
       {
-        path: "/setting",
-        element: (
-          <Suspense fallback={<div>Loading...</div>}>
-            <SettingPage />
-          </Suspense>
-        ),
+        path: "/dashboard",
+        element: WithSuspense(<DashboardPage />)
       },
     ],
+  },
+  {
+    path: "/register",
+    element: WithSuspense(<RegisterPage />)
+  },
+  {
+    path: "/login",
+    element: WithSuspense(<LoginPage />)
   },
 ]);
 

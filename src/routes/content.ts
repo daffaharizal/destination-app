@@ -1,3 +1,5 @@
 import { lazy } from "react";
 
-export const SettingPage = lazy(() => import("@/pages/setting/main"));
+export const DashboardPage = lazy(() => import("@pages/dashboard"))
+export const RegisterPage = lazy(() => import("@pages/register"));
+export const LoginPage = lazy(() => import("@pages/login"));

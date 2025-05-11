@@ -1,3 +1,4 @@
+// Main Response
 export interface HttpResponse<T> {
   data: T;
   meta?: {
