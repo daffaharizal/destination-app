@@ -1,27 +1,25 @@
 import { Button } from "@/components/ui/button";
-import { DOCUMENT_ID, EMAIL, ID_USER, TOKEN, USERNAME } from "@/lib";
-import { Outlet, NavLink, useNavigate } from "react-router-dom";
+import { LogOut } from "lucide-react";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function MainLayout() {
   const navigate = useNavigate();
-  
+
   const handleLogoutAuthentication = () => {
     sessionStorage.clear();
     navigate("login");
-  }
-  
+  };
+
   return (
-    <div>
-      <nav className="flex gap-4 p-4 bg-gray-100">
-        <NavLink to="/dashboard">Dashboard</NavLink>
-        <NavLink to="/register">Register</NavLink>
-        <Button onClick={handleLogoutAuthentication}>
-          Logout
+    <>
+      <aside className="w-64 fixed top-0 left-0 h-full bg-white p-8 text-center shadow-md z-10">
+        <Button variant={"logout"} className="bottom-0">
+          <LogOut /> Logout
         </Button>
-      </nav>
-      <main className="p-4">
+      </aside>
+      <main className="ml-64 flex-1 min-h-screen overflow-auto p-6 bg-gray-50">
         <Outlet />
       </main>
-    </div>
+    </>
   );
 }
