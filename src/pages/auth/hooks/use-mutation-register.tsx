@@ -13,6 +13,7 @@ export default function useMutationRegister() {
   const { mutateAsync, isPending, isError, isSuccess } = useMutation({
     mutationKey: ["post-login"],
     mutationFn: async (payload: PayloadRegister) => {
+      console.log("payload reg: ", payload);
       const formData = new URLSearchParams();
       formData.append("email", payload.email);
       formData.append("username", payload.username);
@@ -30,8 +31,8 @@ export default function useMutationRegister() {
 
       return response.data;
     },
-    onError: (error) => {
-      const { message, name } = error.response.data.error;
+    onError: (error: any) => {
+      const { message, name } = error?.response.data.error;
       toast({
         title: name,
         description: message,

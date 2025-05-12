@@ -27,11 +27,10 @@ export default function useMutationLogin() {
         }
       );
 
-      console.log("response login: ", response.data);
       return response.data;
     },
-    onError: (error) => {
-      const { message, name } = error.response.data.error;
+    onError: (error: any) => {
+      const { message, name } = error?.response.data.error;
       toast({
         title: name,
         description: message,

@@ -4,141 +4,130 @@ import { useState } from "react";
 import useMutationLogin from "../auth/hooks/use-mutation-login";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
+import { Eye, EyeClosed, Lock, LogIn, Mail } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import Animation3D from "@/assets/images/3D.png";
 
 export default function LoginPage() {
   const [identifier, setIdentifier] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
   const { login, isErrorLogin, isPendingLogin, isSuccessLogin } =
     useMutationLogin();
 
   const handleAuthentication = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("login");
     login({ identifier, password });
   };
 
+  const handleClickNavigateToRegister = () => {
+    navigate("/register");
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-emerald-800">
+    <div className="flex flex-col min-h-screen bg-blue-500">
       {/* Main Content */}
       <div className="flex flex-col md:flex-row flex-grow">
         {/* Left Section (Hero) - Hidden on mobile */}
-        <div
-          className="hidden md:flex md:w-1/2 relative bg-cover bg-center"
-          style={{ backgroundImage: "url('/api/placeholder/800/600')" }}
-        >
+        <div className="hidden md:flex md:w-1/2 relative bg-cover bg-center">
           <div className="absolute inset-0 bg-black/30"></div>
-          <div className="relative z-10 flex flex-col justify-between w-full p-8">
-            <div>
-              <h2 className="text-3xl font-bold text-white">
-                Travel Article App{" "}
-              </h2>
-            </div>
-            <div className="mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Create Your Account Now!
+          <div className="relative z-10 flex flex-col mx-auto my-auto w-full p-8">
+            <img
+              className="min-w-40 w-full max-w-[430px] mx-auto"
+              src={Animation3D}
+              alt=""
+            />
+            <div className="flex flex-col gap-2 text-center">
+              <h1 className="text-4xl font-extrabold text-white">
+                Travel Platform
               </h1>
-              <p className="text-white text-lg">
-                By creating an account, you'll enjoy personalized travel
-                recommendations, faster bookings, and exclusive offers.
+              <p className="text-white text-sm">
+                ©Copyright By Data Cakra 2025. All rights reserved.
               </p>
-            </div>
-            <div className="flex justify-between text-white text-sm">
-              <p>Copyright By Data Cakra 2025. All rights reserved.</p>
             </div>
           </div>
         </div>
 
         {/* Right Section (Form) */}
-        <div className="w-full h-dvh md:w-1/2 bg-white p-6 flex items-center justify-center">
+        <div className="w-full z-50 h-dvh md:w-1/2 bg-white p-6 flex items-center justify-center">
           <div className="w-full max-w-md">
-            <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold">Login Now!</h2>
+            <div className="text-center mb-10 flex flex-col gap-2">
+              <h1 className="text-4xl font-extrabold text-blue-500">
+                Login Now!
+              </h1>
               <p className="text-gray-600">Login now to start your journey!</p>
             </div>
 
             <form
-              className="flex flex-col gap-4"
+              className="flex flex-col gap-5"
               onSubmit={handleAuthentication}
             >
-              <FloatingLabelInput
-                onChange={(e) => setIdentifier(e.target.value)}
-                type="email"
-                id="identifier"
-                label="Identifier"
-              />
-
-              <FloatingLabelInput
-                onChange={(e) => setPassword(e.target.value)}
-                type="password"
-                id="password"
-                label="Password"
-              />
-
-              <div className="flex items-center mx-auto mb-2">
-                <input
-                  id="terms"
-                  type="checkbox"
-                  className="w-4 h-4 text-blue-500 border-gray-300 rounded"
+              {/* Email Input */}
+              <div className="relative flex items-center">
+                <Mail className="absolute left-4 top-2.5 w-4 h-4.5 text-gray-500" />
+                <Input
+                  type="email"
+                  placeholder="e.g. harizal.daffa46@gmail.com"
+                  value={identifier}
+                  onChange={(e) => setIdentifier(e.target.value)}
+                  className="pl-11 py-5"
+                  required
                 />
-                <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
-                  I agree to{" "}
-                  <a href="#" className="text-gray-800 font-medium">
-                    Terms of Conditions
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="text-gray-800 font-medium">
-                    Privacy of Policy
-                  </a>
-                </label>
+              </div>
+
+              {/* Password Input */}
+              <div className="relative">
+                <Lock className="absolute left-4 top-2.5 w-4 h-4.5 text-gray-500" />
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="pl-11 pr-10 py-5"
+                  required
+                />
+                <div
+                  className="absolute right-4 top-3 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeClosed className="w-5 h-5 text-gray-500" />
+                  ) : (
+                    <Eye className="w-5 h-5 text-gray-500" />
+                  )}
+                </div>
+              </div>
+
+              <div className="mb-[-10px] text-center">
+                <p className="text-sm text-gray-600">
+                  Don't have an account?{" "}
+                  <span
+                    onClick={handleClickNavigateToRegister}
+                    className="text-gray-800 hover:text-gray-800 font-medium hover:underline hover:cursor-pointer"
+                  >
+                    Register
+                  </span>
+                </p>
               </div>
 
               <Button
                 type="submit"
-                className="w-full py-3 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center justify-center"
+                className="w-full py-5 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center justify-center"
                 disabled={isPendingLogin}
               >
-                Sign In
-                <svg
-                  className="ml-2 w-5 h-5"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
+                Log In
+                <LogIn />
               </Button>
             </form>
 
-            <div className="mt-4 text-center">
-              <p className="text-sm text-gray-600">
-                Already have an account?{" "}
-                <a
-                  href="#"
-                  className="text-gray-800 font-medium hover:underline"
-                >
-                  Register
-                </a>
-              </p>
-            </div>
-
             {/* Footer - Only visible on mobile */}
-            <div className="mt-8 pt-4 border-t border-gray-200 flex flex-col items-center md:hidden">
-              <div className="flex gap-4 mb-2">
-                <a href="#" className="text-xs text-gray-600 hover:underline">
-                  Terms of Service
-                </a>
-                <a href="#" className="text-xs text-gray-600 hover:underline">
-                  Privacy Policy
-                </a>
-              </div>
-              <p className="text-xs text-gray-500">
-                @ Copyright - By Data Cakra 2025. All rights reserved.
+            <div className="mt-5 pt-5 border-t border-gray-200 flex flex-col items-center md:hidden">
+              <p className="text-sm text-blue-900 font-normal">
+                ©Copyright By Data Cakra 2025. All rights reserved.
               </p>
             </div>
           </div>
