@@ -31,6 +31,7 @@ import type { Option } from "@/components/molecules/multiple-selector";
 import useMutationCategory from "./hooks/mutation-category";
 import type { CategoryResponse } from "./lib/model";
 import ModalDelete from "@/components/molecules/modal-delete";
+import { SuspensePage } from "@/routes/content";
 
 export default function CategoryPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -71,7 +72,6 @@ export default function CategoryPage() {
         },
       });
     } else {
-      console.log("value edit: ", values);
       await updateCategory({
         documentId: selectedCategory.documentId,
         data: { name: values.name },
@@ -176,8 +176,8 @@ export default function CategoryPage() {
 
   return (
     <div className="rounded-xl border shadow-sm bg-white p-10 h-[95vh] overflow-auto">
-      {isLoading ? (
-        <div className="flex justify-center items-center h-64">Loading...</div>
+      {isLoading || isPending ? (
+        <SuspensePage />
       ) : isError ? (
         <div className="text-red-500 text-center h-64 flex items-center justify-center">
           Error loading data. Please try again.
@@ -196,6 +196,7 @@ export default function CategoryPage() {
               <TableRow>
                 <TableHead className="text-center">ID</TableHead>
                 <TableHead className="text-center">Name</TableHead>
+                <TableHead className="text-center">Created</TableHead>
                 <TableHead className="text-center">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -204,7 +205,9 @@ export default function CategoryPage() {
                 dataCategory.map((cat) => (
                   <TableRow key={cat.id}>
                     <TableCell className="text-center">{cat.id}</TableCell>
-                    <TableCell className="text-center">{cat.name}</TableCell>
+                    <TableCell className="text-center">{cat.name}</TableCell><TableCell className="text-center">
+                      {new Date(cat.createdAt).toLocaleString()}
+                    </TableCell>
                     <TableCell className="text-center flex gap-1.5 justify-center">
                       <Button
                         variant="warning"
@@ -268,7 +271,7 @@ export default function CategoryPage() {
 
             {/* Right: Pagination */}
             {totalCategory! > 0 && (
-              <Pagination className="w-1/2 m-0 text-right">
+              <Pagination className="w-1/2 m-0 !justify-end text-right">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious href="#" onClick={handlePrevious} />

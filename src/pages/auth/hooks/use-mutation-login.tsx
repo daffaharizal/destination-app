@@ -30,7 +30,6 @@ export default function useMutationLogin() {
       return response.data;
     },
     onError: (error: ErrorTanstackQuery) => {
-      console.log("err", error);
       const { message, name } = error?.response.data.error;
       toast({
         title: name,

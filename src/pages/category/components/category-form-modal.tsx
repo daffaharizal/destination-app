@@ -24,7 +24,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 const formSchema = z.object({
-  name: z.string().min(1, "Judul tidak boleh kosong"),
+  name: z.string().min(1, "Title must fill"),
 });
 
 type CategoryFormValues = z.infer<typeof formSchema>;

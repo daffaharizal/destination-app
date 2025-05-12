@@ -31,6 +31,7 @@ import MultipleSelector from "@/components/molecules/multiple-selector";
 import ArticleFormModal from "./components/article-form-modal";
 import ModalDelete from "@/components/molecules/modal-delete";
 import useMutationArticle from "./hooks/mutation-article";
+import { SuspensePage } from "@/routes/content";
 
 const FILTER_POPULATE: Option[] = [
   {
@@ -64,8 +65,6 @@ export default function DashboardPage() {
     pageArticle,
     pageSizeArticle,
     isLoading,
-    isError,
-    isSuccess,
     refetchArticle,
   } = useArticlePaged(page, pageSize, filter);
 
@@ -197,12 +196,8 @@ export default function DashboardPage() {
 
   return (
     <div className="rounded-xl border shadow-sm bg-white p-10 h-[95vh] overflow-auto">
-      {isLoading ? (
-        <div className="flex justify-center items-center h-64">Loading...</div>
-      ) : isError ? (
-        <div className="text-red-500 text-center h-64 flex items-center justify-center">
-          Error loading data. Please try again.
-        </div>
+      {isLoading || isPending ? (
+        <SuspensePage />
       ) : (
         <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
@@ -289,7 +284,7 @@ export default function DashboardPage() {
           {/* Pagination */}
           <div className="flex items-center justify-between mt-4 flex-wrap gap-4">
             {/* Left: Select */}
-            <div className="flex items-center gap-2 ml-6">
+            <div className="flex items-center gap-2">
               <span>Show</span>
               <Select
                 value={String(pageSize)}
@@ -312,7 +307,7 @@ export default function DashboardPage() {
 
             {/* Right: Pagination */}
             {totalArticle! > 0 && (
-              <Pagination className="w-1/2 m-0 text-right">
+              <Pagination className="w-1/2 m-0 text-right !justify-end">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious href="#" onClick={handlePrevious} />

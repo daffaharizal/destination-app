@@ -33,7 +33,7 @@ export default function useArticlePaged(
 
   return {
     dataArticle: data?.data.data ?? [],
-    totalArticle: data?.data.meta?.pagination.total,
+    totalArticle: data?.data.meta?.pagination.pageCount,
     pageArticle: data?.data.meta?.pagination.page,
     pageSizeArticle: data?.data.meta?.pagination.pageSize,
     isLoading,

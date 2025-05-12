@@ -30,7 +30,7 @@ export default function useCategoryPaged(page = 1, pageSize = 10, filter: Option
 
   return {
     dataCategory: data?.data.data ?? [],
-    totalCategory: data?.data.meta?.pagination.total,
+    totalCategory: data?.data.meta?.pagination.pageCount,
     pageCategory: data?.data.meta?.pagination.page,
     pageSizeCategory: data?.data.meta?.pagination.pageSize,
     isLoading,

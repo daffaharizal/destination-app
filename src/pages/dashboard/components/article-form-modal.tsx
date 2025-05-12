@@ -1,6 +1,6 @@
-import * as z from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +9,10 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
-} from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormField,
@@ -20,25 +20,33 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-} from "@/components/ui/form"
-import { useEffect } from "react"
-import { ClipboardList, Image, Type } from "lucide-react"
+} from "@/components/ui/form";
+import { useEffect } from "react";
+import { ClipboardList, Image, Type } from "lucide-react";
+import useCategoryAll from "@/pages/category/hooks/use-category-all";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const formSchema = z.object({
-  title: z.string().min(1, "Judul tidak boleh kosong"),
-  description: z.string().min(1, "Deskripsi tidak boleh kosong"),
-  cover_image_url: z.string().url("Harus berupa URL yang valid"),
-  category: z.coerce.number().min(1, "Kategori harus diisi"),
-})
+  title: z.string().min(1, "Title must add"),
+  description: z.string().min(1, "Description must add"),
+  cover_image_url: z.string().url("Must a URL"),
+  category: z.coerce.number().min(1, "Category must fill"),
+});
 
-type ArticleFormValues = z.infer<typeof formSchema>
+type ArticleFormValues = z.infer<typeof formSchema>;
 
 type Props = {
-  open: boolean
-  onOpenChange: (value: boolean) => void
-  initialData?: Partial<ArticleFormValues> | null
-  onSubmit: (values: ArticleFormValues) => void
-}
+  open: boolean;
+  onOpenChange: (value: boolean) => void;
+  initialData?: Partial<ArticleFormValues> | null;
+  onSubmit: (values: ArticleFormValues) => void;
+};
 
 export default function ArticleFormModal({
   open,
@@ -46,6 +54,8 @@ export default function ArticleFormModal({
   initialData,
   onSubmit,
 }: Props) {
+  const { dataCategory, isLoading, isSuccess } = useCategoryAll();
+
   const form = useForm<ArticleFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,15 +64,15 @@ export default function ArticleFormModal({
       cover_image_url: "",
       category: 0,
     },
-  })
+  });
 
   useEffect(() => {
     if (initialData) {
-      form.reset(initialData)
+      form.reset(initialData);
     }
-  }, [initialData, form])
+  }, [initialData, form]);
 
-  const isEdit = !!initialData
+  const isEdit = !!initialData;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -77,10 +87,7 @@ export default function ArticleFormModal({
         </DialogHeader>
 
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             {/* Title */}
             <FormField
               control={form.control}
@@ -88,14 +95,14 @@ export default function ArticleFormModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm text-gray-700 mb-1 block">
-                    Judul
+                    Title
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Type className="absolute left-4 top-3 w-4 h-4 text-gray-500" />
                       <Input
                         {...field}
-                        placeholder="Masukkan judul Article"
+                        placeholder="Enter title"
                         className="pl-11 py-5"
                       />
                     </div>
@@ -112,12 +119,12 @@ export default function ArticleFormModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm text-gray-700 mb-1 block">
-                    Deskripsi
+                    Description
                   </FormLabel>
                   <FormControl>
                     <Textarea
                       {...field}
-                      placeholder="Masukkan deskripsi"
+                      placeholder="Enter description"
                       className="py-3"
                     />
                   </FormControl>
@@ -157,17 +164,31 @@ export default function ArticleFormModal({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-sm text-gray-700 mb-1 block">
-                    Kategori
+                    Category
                   </FormLabel>
                   <FormControl>
                     <div className="relative">
-                      <ClipboardList className="absolute left-4 top-3 w-4 h-4 text-gray-500" />
-                      <Input
-                        type="number"
-                        {...field}
-                        placeholder="ID kategori"
-                        className="pl-11 py-5"
-                      />
+                      <ClipboardList className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+
+                      <Select
+                        value={field.value?.toString()}
+                        onValueChange={(value) => field.onChange(Number(value))}
+                      >
+                        <SelectTrigger className="w-full text-sm pl-10">
+                          {" "}
+                          <SelectValue placeholder="Select Category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {dataCategory?.map((item) => (
+                            <SelectItem
+                              key={item.id}
+                              value={item.id.toString()}
+                            >
+                              {item.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </FormControl>
                   <FormMessage />
@@ -189,5 +210,5 @@ export default function ArticleFormModal({
         </Form>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

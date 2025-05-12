@@ -27,7 +27,7 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white shadow-md px-8 py-3">
+    <nav className="bg-white fixed top-0 w-full shadow-md px-8 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <h1 className="text-2xl font-bold text-blue-600">Travel Platform</h1>
 

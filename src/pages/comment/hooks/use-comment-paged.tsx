@@ -30,7 +30,7 @@ export default function useCommentPaged(page = 1, pageSize = 10, filter: Option[
 
   return {
     dataComment: data?.data.data ?? [],
-    totalComment: data?.data.meta?.pagination.total,
+    totalComment: data?.data.meta?.pagination.pageCount,
     pageComment: data?.data.meta?.pagination.page,
     pageSizeComment: data?.data.meta?.pagination.pageSize,
     isLoading,
