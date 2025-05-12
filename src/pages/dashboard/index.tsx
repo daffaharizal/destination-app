@@ -34,6 +34,8 @@ import useMutationArticle from "./hooks/mutation-article";
 import { SuspensePage } from "@/routes/content";
 import type { ArticleResponse } from "./lib/model";
 import ArticleDetail from "./components/article-detail";
+import { Input } from "@/components/ui/input";
+import SearchInput from "@/components/molecules/search-input";
 
 const FILTER_POPULATE: Option[] = [
   {
@@ -65,6 +67,8 @@ export default function DashboardPage() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filter, setFilter] = useState<Option[]>([]);
+  const [inputSearch, setInputSearch] = useState("");
+  const [inputSearchTitle, setInputSearchTitle] = useState("");
 
   const {
     dataArticle,
@@ -73,14 +77,14 @@ export default function DashboardPage() {
     pageSizeArticle,
     isLoading,
     refetchArticle,
-  } = useArticlePaged(page, pageSize, filter);
+  } = useArticlePaged(page, pageSize, filter, inputSearch, inputSearchTitle);
 
   const { addArticle, updateArticle, deleteArticle, isPending } =
     useMutationArticle();
 
   useEffect(() => {
     refetchArticle();
-  }, [page, pageSize, filter]);
+  }, [page, pageSize, filter, inputSearch, inputSearchTitle]);
 
   // Generate pagination links
   const getPaginationItems = () => {
@@ -237,6 +241,14 @@ export default function DashboardPage() {
       .catch(() => setModalOpen(false));
   };
 
+  const handleSearchCategoryName = (value: string) => {
+    setInputSearch(value);
+  }
+
+  const handleSearchTitle = (value: string) => {
+    setInputSearchTitle(value);
+  }
+
   return (
     <div className="rounded-xl border shadow-sm bg-white p-3 md:p-10 h-[95vh] overflow-auto">
       {isLoading || isPending ? (
@@ -250,16 +262,21 @@ export default function DashboardPage() {
               Add Article
             </Button>
           </div>
-          <MultipleSelector
-            defaultOptions={FILTER_POPULATE}
-            onChange={handleChangeFilter}
-            placeholder="Select Filter Populate"
-            emptyIndicator={
-              <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
-                no results found.
-              </p>
-            }
-          />
+          <div className="w-full flex gap-4 justify-between items-center">
+            <MultipleSelector
+              className="w-full"
+              defaultOptions={FILTER_POPULATE}
+              onChange={handleChangeFilter}
+              placeholder="Select Filter Populate"
+              emptyIndicator={
+                <p className="text-center text-lg leading-10 text-gray-600 dark:text-gray-400">
+                  no results found.
+                </p>
+              }
+            />
+            <SearchInput placeholder="Filter by Category & Name" onSearch={handleSearchCategoryName}/>
+            <SearchInput placeholder="Filter by Title" onSearch={handleSearchTitle}/>
+          </div>
           <Table>
             <TableHeader>
               <TableRow>
@@ -292,7 +309,11 @@ export default function DashboardPage() {
                         />
                       </TableCell>
                       <TableCell className="text-right flex gap-1.5">
-                        <Button variant={"view"} onClick={() => handleView(doc)} className="p-2">
+                        <Button
+                          variant={"view"}
+                          onClick={() => handleView(doc)}
+                          className="p-2"
+                        >
                           <Eye className="w-3 h-3 text-blue-500" />
                         </Button>
                         <Button

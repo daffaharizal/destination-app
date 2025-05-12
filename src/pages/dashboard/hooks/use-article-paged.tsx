@@ -7,7 +7,9 @@ import type { Option } from "@/components/molecules/multiple-selector";
 export default function useArticlePaged(
   page = 1,
   pageSize = 10,
-  filter: Option[]
+  filter: Option[],
+  valueSearch: string,
+  valueSearchTitle: string
 ) {
   const { data, isLoading, isError, isSuccess, refetch } = useQuery({
     queryKey: ["/articles"],
@@ -21,12 +23,22 @@ export default function useArticlePaged(
         return acc;
       }, {} as Record<string, string>);
 
+      const params: Record<string, any> = {
+        "pagination[page]": page,
+        "pagination[pageSize]": pageSize,
+        ...filterParams,
+      };
+
+      if (valueSearch.trim().length > 0) {
+        params["filters[category][name][$eqi]"] = valueSearch;
+      }
+
+      if (valueSearchTitle.trim().length > 0) {
+        params["filters[title][$eqi]"] = valueSearchTitle;
+      }
+
       return api.get<HttpResponse<ArticleResponse[]>>(__url.toString(), {
-        params: {
-          "pagination[page]": page,
-          "pagination[pageSize]": pageSize,
-          ...filterParams,
-        },
+        params,
       });
     },
   });
