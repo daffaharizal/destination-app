@@ -26,8 +26,12 @@ export default function Navbar() {
     navigate("login");
   };
 
+  const handleCickDropdownMobile = () => {
+    
+  }
+
   return (
-    <nav className="bg-white fixed top-0 w-full shadow-md px-8 py-3">
+    <nav className="z-[999] bg-white fixed top-0 w-full shadow-md px-8 py-3">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <h1 className="text-2xl font-bold text-blue-600">Travel Platform</h1>
 
@@ -109,16 +113,37 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden mt-2 flex flex-col gap-2">
           <Button
-            onClick={() => navigate("login")}
-            className="bg-blue-100 text-blue-700 hover:text-white px-4 py-2 rounded"
+            variant={
+              pathname === "/dashboard" || pathname == "/" ? "tabToggleActive" : "tabToggleBase"
+            }
+            onClick={() => {
+              navigate("/dashboard")
+              setMenuOpen(!menuOpen);
+            }}
           >
-            Login
+            Article
           </Button>
           <Button
-            onClick={() => navigate("register")}
-            className="bg-blue-100 text-blue-700 hover:text-white px-4 py-2 rounded"
+            variant={
+              pathname === "/category" ? "tabToggleActive" : "tabToggleBase"
+            }
+            onClick={() => {
+              navigate("/category")
+              setMenuOpen(!menuOpen);
+            }}
           >
-            Register
+            Category
+          </Button>
+          <Button
+            variant={
+              pathname === "/comment" ? "tabToggleActive" : "tabToggleBase"
+            }
+            onClick={() => {
+              navigate("/comment")
+              setMenuOpen(!menuOpen);
+            }}
+          >
+            Comment
           </Button>
 
           {/* Mobile Logout with Modal */}

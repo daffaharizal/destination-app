@@ -13,6 +13,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
+import { SuspensePage } from "@/routes/content";
 
 export interface Option {
   value: string;
@@ -574,7 +575,7 @@ const MultipleSelector = React.forwardRef<
               }}
             >
               {isLoading ? (
-                <>{loadingIndicator}</>
+                <SuspensePage />
               ) : (
                 <>
                   {EmptyItem()}

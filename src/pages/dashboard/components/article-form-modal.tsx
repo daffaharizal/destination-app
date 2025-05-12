@@ -68,7 +68,10 @@ export default function ArticleFormModal({
 
   useEffect(() => {
     if (initialData) {
-      form.reset(initialData);
+      form.reset({
+        ...initialData,
+        category: initialData.category ?? 0,
+      });
     }
   }, [initialData, form]);
 
@@ -173,6 +176,7 @@ export default function ArticleFormModal({
                       <Select
                         value={field.value?.toString()}
                         onValueChange={(value) => field.onChange(Number(value))}
+                        defaultValue={initialData?.category?.toString()}
                       >
                         <SelectTrigger className="w-full text-sm pl-10">
                           {" "}

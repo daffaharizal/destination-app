@@ -32,6 +32,8 @@ import ArticleFormModal from "./components/article-form-modal";
 import ModalDelete from "@/components/molecules/modal-delete";
 import useMutationArticle from "./hooks/mutation-article";
 import { SuspensePage } from "@/routes/content";
+import type { ArticleResponse } from "./lib/model";
+import ArticleDetail from "./components/article-detail";
 
 const FILTER_POPULATE: Option[] = [
   {
@@ -53,8 +55,13 @@ const FILTER_POPULATE: Option[] = [
 ];
 
 export default function DashboardPage() {
+  // VIEW
+  const [open, setOpen] = useState(false);
+
+  // CRUD
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedArticle, setSelectedArticle] = useState(null);
+  const [selectedArticle, setSelectedArticle] =
+    useState<Partial<ArticleResponse> | null>(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filter, setFilter] = useState<Option[]>([]);
@@ -185,17 +192,53 @@ export default function DashboardPage() {
     setFilter(value);
   };
 
+  const handleView = (article: ArticleResponse) => {
+    if (article.title && article.description) {
+      setSelectedArticle({
+        title: article.title,
+        description: article.description,
+        cover_image_url: article.cover_image_url ?? null,
+      });
+      setOpen(true);
+    }
+  };
+
   const handleAdd = () => {
     setSelectedArticle(null);
     setModalOpen(true);
   };
 
-  const handleSubmit = async (values: any) => {
-    console.log("values art: ", values);
+  const handleEdit = (data: ArticleResponse) => {
+    setSelectedArticle(data);
+    setModalOpen(true);
+  };
+
+  const handleSubmit = async (values: {
+    title: string;
+    description: string;
+    cover_image_url: string;
+    category: number;
+  }) => {
+    if (!selectedArticle) {
+      await addArticle({ data: values }).catch(() => {
+        setModalOpen(false);
+      });
+    } else {
+      await updateArticle({
+        documentId: selectedArticle.documentId!,
+        data: values,
+      }).catch(() => {
+        setModalOpen(false);
+      });
+    }
+
+    refetchArticle()
+      .finally(() => setModalOpen(false))
+      .catch(() => setModalOpen(false));
   };
 
   return (
-    <div className="rounded-xl border shadow-sm bg-white p-10 h-[95vh] overflow-auto">
+    <div className="rounded-xl border shadow-sm bg-white p-3 md:p-10 h-[95vh] overflow-auto">
       {isLoading || isPending ? (
         <SuspensePage />
       ) : (
@@ -220,7 +263,7 @@ export default function DashboardPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-center">ID</TableHead>
+                <TableHead className="text-center">No.</TableHead>
                 <TableHead className="text-center">Title</TableHead>
                 <TableHead className="text-center">Description</TableHead>
                 <TableHead className="text-center">Cover</TableHead>
@@ -229,48 +272,56 @@ export default function DashboardPage() {
             </TableHeader>
             <TableBody>
               {dataArticle.length > 0 ? (
-                dataArticle.map((doc) => (
-                  <TableRow key={doc.id}>
-                    <TableCell>{doc.id}</TableCell>
-                    <TableCell className="font-medium text-center">
-                      {doc.title}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground text-center truncate max-w-xs">
-                      {doc.description}
-                    </TableCell>
-                    <TableCell>
-                      <img
-                        src={doc.cover_image_url}
-                        alt="cover"
-                        className="w-16 h-10 object-cover rounded"
-                      />
-                    </TableCell>
-                    <TableCell className="text-right flex gap-1.5">
-                      <Button variant={"view"} className="p-2">
-                        <Eye className="w-3 h-3 text-blue-500" />
-                      </Button>
-                      <Button variant={"warning"} className="p-2">
-                        <Pencil className="w-3 h-3 text-yellow-500" />
-                      </Button>
-                      <ModalDelete
-                        title={`Delete Article "${doc.title}"?`}
-                        description="This action cannot be undone and the article will be permanently removed."
-                        onConfirm={() =>
-                          deleteArticle({
-                            documentId: doc.documentId,
-                          }).finally(() => {
-                            refetchArticle();
-                          })
-                        }
-                        trigger={
-                          <Button variant={"danger"} className="p-2">
-                            <Trash2 className="w-3 h-3 text-red-500" />
-                          </Button>
-                        }
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
+                dataArticle.map((doc, index) => {
+                  const startNumber = (page - 1) * pageSize;
+
+                  return (
+                    <TableRow key={doc.id}>
+                      <TableCell>{startNumber + index + 1}</TableCell>
+                      <TableCell className="font-medium text-center">
+                        {doc.title}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground text-center truncate max-w-xs">
+                        {doc.description}
+                      </TableCell>
+                      <TableCell>
+                        <img
+                          src={doc.cover_image_url}
+                          alt="cover"
+                          className="w-16 h-10 object-cover rounded"
+                        />
+                      </TableCell>
+                      <TableCell className="text-right flex gap-1.5">
+                        <Button variant={"view"} onClick={() => handleView(doc)} className="p-2">
+                          <Eye className="w-3 h-3 text-blue-500" />
+                        </Button>
+                        <Button
+                          variant={"warning"}
+                          onClick={() => handleEdit(doc)}
+                          className="p-2"
+                        >
+                          <Pencil className="w-3 h-3 text-yellow-500" />
+                        </Button>
+                        <ModalDelete
+                          title={`Delete Article "${doc.title}"?`}
+                          description="This action cannot be undone and the article will be permanently removed."
+                          onConfirm={() =>
+                            deleteArticle({
+                              documentId: doc.documentId,
+                            }).finally(() => {
+                              refetchArticle();
+                            })
+                          }
+                          trigger={
+                            <Button variant={"danger"} className="p-2">
+                              <Trash2 className="w-3 h-3 text-red-500" />
+                            </Button>
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               ) : (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-8">
@@ -282,7 +333,7 @@ export default function DashboardPage() {
           </Table>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-4 flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row text-xs items-center justify-between mt-4 flex-wrap gap-4">
             {/* Left: Select */}
             <div className="flex items-center gap-2">
               <span>Show</span>
@@ -301,13 +352,13 @@ export default function DashboardPage() {
                   <SelectItem value="50">50</SelectItem>
                   <SelectItem value="100">100</SelectItem>
                 </SelectContent>
+                <span>Data</span>
               </Select>
-              <span>entries</span>
             </div>
 
             {/* Right: Pagination */}
             {totalArticle! > 0 && (
-              <Pagination className="w-1/2 m-0 text-right !justify-end">
+              <Pagination className="flex m-0 flex-wrap !justify-end w-auto md:w-1/2">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious href="#" onClick={handlePrevious} />
@@ -331,6 +382,13 @@ export default function DashboardPage() {
         onOpenChange={setModalOpen}
         initialData={selectedArticle}
         onSubmit={handleSubmit}
+      />
+
+      {/* Article Detail */}
+      <ArticleDetail
+        open={open}
+        onOpenChange={setOpen}
+        article={selectedArticle as any}
       />
     </div>
   );

@@ -175,7 +175,7 @@ export default function CategoryPage() {
   };
 
   return (
-    <div className="rounded-xl border shadow-sm bg-white p-10 h-[95vh] overflow-auto">
+    <div className="rounded-xl border shadow-sm bg-white p-2 md:p-10 h-[95vh] overflow-auto">
       {isLoading || isPending ? (
         <SuspensePage />
       ) : isError ? (
@@ -202,39 +202,46 @@ export default function CategoryPage() {
             </TableHeader>
             <TableBody>
               {dataCategory.length > 0 ? (
-                dataCategory.map((cat) => (
-                  <TableRow key={cat.id}>
-                    <TableCell className="text-center">{cat.id}</TableCell>
-                    <TableCell className="text-center">{cat.name}</TableCell><TableCell className="text-center">
-                      {new Date(cat.createdAt).toLocaleString()}
-                    </TableCell>
-                    <TableCell className="text-center flex gap-1.5 justify-center">
-                      <Button
-                        variant="warning"
-                        className="p-2"
-                        onClick={() => handleEdit(cat)}
-                      >
-                        <Pencil className="w-4 h-4 text-yellow-500" />
-                      </Button>
-                      <ModalDelete
-                        title={`Delete category "${cat.name}"?`}
-                        description="This action cannot be undone and the category will be permanently removed."
-                        onConfirm={() =>
-                          deleteCategory({
-                            documentId: cat.documentId,
-                          }).finally(() => {
-                            refetchCategory();
-                          })
-                        }
-                        trigger={
-                          <Button variant="danger" className="p-2">
-                            <Trash2 className="w-4 h-4 text-red-500" />
-                          </Button>
-                        }
-                      />
-                    </TableCell>
-                  </TableRow>
-                ))
+                dataCategory.map((cat, index) => {
+                  const startNumber = (page - 1) * pageSize;
+
+                  return (
+                    <TableRow key={cat.id}>
+                      <TableCell className="text-center">
+                        {startNumber + index + 1}
+                      </TableCell>
+                      <TableCell className="text-center">{cat.name}</TableCell>
+                      <TableCell className="text-center">
+                        {new Date(cat.createdAt).toLocaleString()}
+                      </TableCell>
+                      <TableCell className="text-center flex gap-1.5 justify-center">
+                        <Button
+                          variant="warning"
+                          className="p-2"
+                          onClick={() => handleEdit(cat)}
+                        >
+                          <Pencil className="w-4 h-4 text-yellow-500" />
+                        </Button>
+                        <ModalDelete
+                          title={`Delete category "${cat.name}"?`}
+                          description="This action cannot be undone and the category will be permanently removed."
+                          onConfirm={() =>
+                            deleteCategory({
+                              documentId: cat.documentId,
+                            }).finally(() => {
+                              refetchCategory();
+                            })
+                          }
+                          trigger={
+                            <Button variant="danger" className="p-2">
+                              <Trash2 className="w-4 h-4 text-red-500" />
+                            </Button>
+                          }
+                        />
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
               ) : (
                 <TableRow>
                   <TableCell colSpan={3} className="text-center py-8">
@@ -246,7 +253,7 @@ export default function CategoryPage() {
           </Table>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-4 flex-wrap gap-4">
+          <div className="flex mx-auto flex-col md:flex-row items-center justify-between mt-4 flex-wrap gap-4">
             {/* Left: Select */}
             <div className="flex items-center gap-2 ml-6">
               <span>Show</span>
@@ -266,7 +273,7 @@ export default function CategoryPage() {
                   <SelectItem value="100">100</SelectItem>
                 </SelectContent>
               </Select>
-              <span>entries</span>
+              <span>Data</span>
             </div>
 
             {/* Right: Pagination */}

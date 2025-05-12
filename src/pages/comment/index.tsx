@@ -186,7 +186,7 @@ export default function CommentPage() {
   };
 
   return (
-    <div className="rounded-xl border shadow-sm bg-white p-10 h-[95vh] overflow-auto">
+    <div className="rounded-xl border shadow-sm bg-white p-3 md:p-10 h-[95vh] overflow-auto">
       {isLoading || isPending ? (
         <SuspensePage />
       ) : isError ? (
@@ -269,7 +269,7 @@ export default function CommentPage() {
           </Table>
 
           {/* Pagination */}
-          <div className="flex items-center justify-between mt-4 flex-wrap gap-4">
+          <div className="flex flex-col md:flex-row text-xs items-center justify-between mt-4 flex-wrap gap-4">
             <div className="flex items-center gap-2">
               <span>Show</span>
               <Select
@@ -287,12 +287,12 @@ export default function CommentPage() {
                   <SelectItem value="50">50</SelectItem>
                   <SelectItem value="100">100</SelectItem>
                 </SelectContent>
+                <span>Data</span>
               </Select>
-              <span>entries</span>
             </div>
 
             {totalComment! > 0 && (
-              <Pagination className="w-1/2 m-0 text-right !justify-end">
+              <Pagination className="m-0 text-right !justify-end w-auto md:w-1/2">
                 <PaginationContent>
                   <PaginationItem>
                     <PaginationPrevious href="#" onClick={handlePrevious} />
