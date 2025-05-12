@@ -294,21 +294,21 @@ export default function DashboardPage() {
 
                   return (
                     <TableRow key={doc.id}>
-                      <TableCell>{startNumber + index + 1}</TableCell>
+                      <TableCell className="text-center">{startNumber + index + 1}</TableCell>
                       <TableCell className="font-medium text-center">
                         {doc.title}
                       </TableCell>
                       <TableCell className="text-muted-foreground text-center truncate max-w-xs">
                         {doc.description}
                       </TableCell>
-                      <TableCell>
+                      <TableCell className="text-center">
                         <img
                           src={doc.cover_image_url}
                           alt="cover"
-                          className="w-16 h-10 object-cover rounded"
+                          className="w-16 h-10 mx-auto object-cover rounded"
                         />
                       </TableCell>
-                      <TableCell className="text-right flex gap-1.5">
+                      <TableCell className="text-center flex gap-1.5 justify-center mx-auto">
                         <Button
                           variant={"view"}
                           onClick={() => handleView(doc)}
