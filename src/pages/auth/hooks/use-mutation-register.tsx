@@ -10,7 +10,7 @@ export default function useMutationRegister() {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  const { mutateAsync, isPending, isError, isSuccess } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["post-login"],
     mutationFn: async (payload: PayloadRegister) => {
       const formData = new URLSearchParams();

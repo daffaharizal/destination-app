@@ -10,8 +10,6 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "bg-blue-500 text-white hover:bg-blue-600",
-        // tabToggleActive: "bg-blue-500 text-white hover:bg-blue-200 rounded-full px-6 py-2 transition font-semibold focus:outline-none focus:ring-0 border-0 ring-0 outline-none",
-        // tabToggleBase: "bg-transparent text-blue-500 rounded-full",
         tabToggleActive:
           "bg-white text-blue-500 hover:bg-white rounded-full px-6 py-2 transition font-semibold focus:outline-none focus:ring-0 border-0 ring-0 outline-none",
         tabToggleBase:
@@ -25,6 +23,9 @@ const buttonVariants = cva(
         secondary:
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         view: "border border-blue-500 bg-blue-100 hover:bg-blue-200 hover:border-blue-500",
+        add: "bg-blue-500 text-white",
+        update: "bg-yellow-500 text-white",
+        delete: "bg-red-500 text-white",
         warning:
           "border border-yellow-500 bg-yellow-100 hover:bg-yellow-200 hover:border-yellow-500",
         danger:

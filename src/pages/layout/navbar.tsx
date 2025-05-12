@@ -1,12 +1,22 @@
 import { useState } from "react";
-import { ChartNoAxesGantt, LogOut, Menu, Text, X } from "lucide-react";
+import { LogOut, Text, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogTrigger,
+  AlertDialogDelete,
+  AlertDialogAdd,
+} from "@/components/ui/alert-dialog";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<string>("");
-
   const navigate = useNavigate();
   const location = useLocation();
   const { pathname } = location;
@@ -25,11 +35,19 @@ export default function Navbar() {
         <div className="hidden md:flex items-center bg-blue-50 rounded-full p-1.5">
           <Button
             variant={
-              pathname === "/dashboard" ? "tabToggleActive" : "tabToggleBase"
+              pathname === "/dashboard" || pathname == "/" ? "tabToggleActive" : "tabToggleBase"
             }
             onClick={() => navigate("/dashboard")}
           >
-            Dashboard
+            Article
+          </Button>
+          <Button
+            variant={
+              pathname === "/category" ? "tabToggleActive" : "tabToggleBase"
+            }
+            onClick={() => navigate("/category")}
+          >
+            Category
           </Button>
           <Button
             variant={
@@ -41,24 +59,42 @@ export default function Navbar() {
           </Button>
         </div>
 
+        {/* Logout Button with Confirmation Modal */}
         <div className="hidden md:block group">
-          <Button
-            variant={"danger"}
-            className="text-red-500"
-            onClick={handleLogout}
-          >
-            Logout
-            <LogOut className="transition-all duration-200 transform group-hover:translate-x-0.5" />
-          </Button>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={"danger"} className="text-red-500">
+                Logout
+                <LogOut className="transition-all duration-200 transform group-hover:translate-x-0.5" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure you want to log out?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  You will be redirected to the login page and your session will
+                  be cleared.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogDelete
+                  onClick={handleLogout}
+                >
+                  Yes, Logout
+                </AlertDialogDelete>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
 
         {/* Mobile Hamburger */}
         <div className="md:hidden">
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className={
-              " text-blue-500 hover:border-1 hover:border-white bg-transparent"
-            }
+            className="text-blue-500 hover:border-1 hover:border-white bg-transparent"
           >
             {menuOpen ? (
               <X className="w-7 h-7" />
@@ -73,25 +109,44 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden mt-2 flex flex-col gap-2">
           <Button
-            onClick={() => setActiveTab("login")}
+            onClick={() => navigate("login")}
             className="bg-blue-100 text-blue-700 hover:text-white px-4 py-2 rounded"
           >
             Login
           </Button>
           <Button
-            onClick={() => setActiveTab("register")}
+            onClick={() => navigate("register")}
             className="bg-blue-100 text-blue-700 hover:text-white px-4 py-2 rounded"
           >
             Register
           </Button>
-          <Button
-            variant={"danger"}
-            className="text-red-500 mt-2 group"
-            onClick={handleLogout}
-          >
-            Logout
-            <LogOut className="transition-all duration-200 transform group-hover:translate-x-0.5 group-focus:translate-x-0.5" />
-          </Button>
+
+          {/* Mobile Logout with Modal */}
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant={"danger"} className="text-red-500 mt-2 group">
+                Logout
+                <LogOut className="transition-all duration-200 transform group-hover:translate-x-0.5" />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  Are you sure you want to log out?
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  You will be redirected to the login page and your session will
+                  be cleared.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogDelete onClick={handleLogout}>
+                  Yes, Logout
+                </AlertDialogDelete>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       )}
     </nav>

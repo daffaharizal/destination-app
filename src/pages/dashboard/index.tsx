@@ -9,7 +9,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import useArticlePaged from "./hooks/use-article-paged";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Plus, Trash2 } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/pagination";
 import type { Option } from "@/components/molecules/multiple-selector";
 import MultipleSelector from "@/components/molecules/multiple-selector";
+import ArticleFormModal from "./components/article-form-modal";
 
 const FILTER_POPULATE: Option[] = [
   {
@@ -49,6 +50,8 @@ const FILTER_POPULATE: Option[] = [
 ];
 
 export default function DashboardPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedArticle, setSelectedArticle] = useState(null);
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [filter, setFilter] = useState<Option[]>([]);
@@ -178,6 +181,15 @@ export default function DashboardPage() {
     setFilter(value);
   };
 
+  const handleAdd = () => {
+    setSelectedArticle(null);
+    setModalOpen(true);
+  }
+
+  const handleSubmit = async (values: any) => {
+    console.log("values art: ", values);
+  }
+
   return (
     <div className="rounded-xl border shadow-sm bg-white p-10 h-[95vh] overflow-auto">
       {isLoading ? (
@@ -187,7 +199,14 @@ export default function DashboardPage() {
           Error loading data. Please try again.
         </div>
       ) : (
-        <>
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between items-center">
+            <h2 className="font-bold text-xl">Article List</h2>
+            <Button onClick={handleAdd}>
+              <Plus />
+              Add Article
+            </Button>
+          </div>
           <MultipleSelector
             defaultOptions={FILTER_POPULATE}
             onChange={handleChangeFilter}
@@ -290,8 +309,16 @@ export default function DashboardPage() {
               </Pagination>
             )}
           </div>
-        </>
+        </div>
       )}
+
+      {/* Form Modal Article */}
+      <ArticleFormModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        initialData={selectedArticle}
+        onSubmit={handleSubmit}
+      />
     </div>
   );
 }

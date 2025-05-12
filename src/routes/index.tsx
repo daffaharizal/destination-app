@@ -1,7 +1,13 @@
 import { Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../pages/layout";
-import { CommentPage, DashboardPage, LoginPage, RegisterPage } from "./content";
+import {
+  CategoryPage,
+  CommentPage,
+  DashboardPage,
+  LoginPage,
+  RegisterPage,
+} from "./content";
 import ProtectedRoute from "@/pages/auth/components/protected-route";
 import RedirectIfAuthenticated from "@/pages/auth/components/redirect-if-authenticated";
 import AuthSuspense from "@/pages/auth/components/auth-suspense";
@@ -30,6 +36,10 @@ const Router = createBrowserRouter([
           {
             path: "comment",
             element: WithSuspense(<CommentPage />),
+          },
+          {
+            path: "category",
+            element: WithSuspense(<CategoryPage />),
           },
         ],
       },

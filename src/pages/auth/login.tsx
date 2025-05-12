@@ -61,7 +61,7 @@ export default function LoginPage() {
               <h1 className="text-4xl font-extrabold text-white">
                 Travel Platform
               </h1>
-              <p className="text-white text-sm">
+              <p className="text-white text-center text-sm">
                 ©Copyright By Data Cakra 2025. All rights reserved.
               </p>
             </div>
@@ -164,7 +164,7 @@ export default function LoginPage() {
 
             {/* Footer - Only visible on mobile */}
             <div className="mt-5 pt-5 border-t border-gray-200 flex flex-col items-center md:hidden">
-              <p className="text-sm text-blue-900 font-normal">
+              <p className="text-sm text-center text-blue-900 font-normal">
                 ©Copyright By Data Cakra 2025. All rights reserved.
               </p>
             </div>

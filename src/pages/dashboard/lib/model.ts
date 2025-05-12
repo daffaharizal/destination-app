@@ -38,3 +38,22 @@ export interface Document {
   publishedAt: string;
   locale: string | null;
 }
+
+export interface PayloadArticle {
+  data: {
+    title: string;
+    description: string;
+    cover_image_url: string;
+    category: number;
+  }
+}
+
+export interface PayloadUpdateArticle {
+  documentId: string;
+  data: {
+    title: string;
+    description: string;
+    cover_image_url: string;
+    category: number;
+  }
+}
