@@ -1,32 +1,48 @@
-import { FloatingLabelInput } from "@/components/molecules/floating-label";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import useMutationLogin from "../auth/hooks/use-mutation-login";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeClosed, Lock, LogIn, Mail } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import Animation3D from "@/assets/images/3D.png";
 
+const loginSchema = z.object({
+  identifier: z.string().email("Invalid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+
 export default function LoginPage() {
-  const [identifier, setIdentifier] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      identifier: "",
+      password: "",
+    },
+  });
 
-  const { login, isErrorLogin, isPendingLogin, isSuccessLogin } =
-    useMutationLogin();
-
-  const handleAuthentication = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    console.log("login");
+  const onSubmit = (data: LoginFormValues) => {
+    const { identifier, password } = data;
     login({ identifier, password });
   };
 
-  const handleClickNavigateToRegister = () => {
-    navigate("/register");
-  };
+  const { login, isPendingLogin } =
+    useMutationLogin();
 
   return (
     <div className="flex flex-col min-h-screen bg-blue-500">
@@ -37,7 +53,7 @@ export default function LoginPage() {
           <div className="absolute inset-0 bg-black/30"></div>
           <div className="relative z-10 flex flex-col mx-auto my-auto w-full p-8">
             <img
-              className="min-w-40 w-full max-w-[430px] mx-auto"
+              className="min-w-40 w-full max-w-[430px] mx-auto animate-bounce-slow"
               src={Animation3D}
               alt=""
             />
@@ -55,74 +71,96 @@ export default function LoginPage() {
         {/* Right Section (Form) */}
         <div className="w-full z-50 h-dvh md:w-1/2 bg-white p-6 flex items-center justify-center">
           <div className="w-full max-w-md">
-            <div className="text-center mb-10 flex flex-col gap-2">
+            <div className="text-center mb-6 flex flex-col gap-2">
               <h1 className="text-4xl font-extrabold text-blue-500">
                 Login Now!
               </h1>
               <p className="text-gray-600">Login now to start your journey!</p>
             </div>
 
-            <form
-              className="flex flex-col gap-5"
-              onSubmit={handleAuthentication}
-            >
-              {/* Email Input */}
-              <div className="relative flex items-center">
-                <Mail className="absolute left-4 top-2.5 w-4 h-4.5 text-gray-500" />
-                <Input
-                  type="email"
-                  placeholder="e.g. harizal.daffa46@gmail.com"
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  className="pl-11 py-5"
-                  required
-                />
-              </div>
-
-              {/* Password Input */}
-              <div className="relative">
-                <Lock className="absolute left-4 top-2.5 w-4 h-4.5 text-gray-500" />
-                <Input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Your password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="pl-11 pr-10 py-5"
-                  required
-                />
-                <div
-                  className="absolute right-4 top-3 cursor-pointer"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
-                  {showPassword ? (
-                    <EyeClosed className="w-5 h-5 text-gray-500" />
-                  ) : (
-                    <Eye className="w-5 h-5 text-gray-500" />
-                  )}
-                </div>
-              </div>
-
-              <div className="mb-[-10px] text-center">
-                <p className="text-sm text-gray-600">
-                  Don't have an account?{" "}
-                  <span
-                    onClick={handleClickNavigateToRegister}
-                    className="text-gray-800 hover:text-gray-800 font-medium hover:underline hover:cursor-pointer"
-                  >
-                    Register
-                  </span>
-                </p>
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full py-5 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center justify-center"
-                disabled={isPendingLogin}
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-4"
               >
-                Log In
-                <LogIn />
-              </Button>
-            </form>
+                {/* Email */}
+                <FormField
+                  control={form.control}
+                  name="identifier"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm text-gray-700 mb-1 block">
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Mail className="absolute left-4 top-3 w-4 h-4 text-gray-500" />
+                          <Input
+                            {...field}
+                            type="email"
+                            placeholder="e.g. harizal.daffa46@gmail.com"
+                            className="pl-11 py-5"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Password */}
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-sm text-gray-700 mb-1 block">
+                        Password
+                      </FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Lock className="absolute left-4 top-3 w-4 h-4 text-gray-500" />
+                          <Input
+                            {...field}
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Your password"
+                            className="pl-11 pr-10 py-5"
+                          />
+                          <div
+                            className="absolute right-4 top-3 cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                          >
+                            {showPassword ? (
+                              <EyeClosed className="w-5 h-5 text-gray-500" />
+                            ) : (
+                              <Eye className="w-5 h-5 text-gray-500" />
+                            )}
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="text-center">
+                  <p className="text-sm text-gray-600">
+                    Don't have an account?{" "}
+                    <span
+                      onClick={() => navigate("/register")}
+                      className="text-blue-600 hover:underline font-medium cursor-pointer"
+                    >
+                      Register
+                    </span>
+                  </p>
+                </div>
+
+                <Button type="submit" className="w-full py-5">
+                  Log In
+                  <LogIn className="ml-2" />
+                </Button>
+              </form>
+            </Form>
 
             {/* Footer - Only visible on mobile */}
             <div className="mt-5 pt-5 border-t border-gray-200 flex flex-col items-center md:hidden">

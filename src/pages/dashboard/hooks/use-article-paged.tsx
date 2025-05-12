@@ -10,7 +10,6 @@ export default function useArticlePaged(page = 1, pageSize = 10, filter: Option[
     queryFn: ({ queryKey }) => {
       const [__url, __page, __pageSize, __filter] = queryKey;
 
-      console.log("filter dapet: ", filter);
       const filterParams = (filter as { label: string; value: string }[]).reduce(
         (acc, item) => {
           acc[item.value] = "*";

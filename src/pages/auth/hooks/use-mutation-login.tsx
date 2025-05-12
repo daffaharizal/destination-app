@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import type { AuthResponse, PayloadLogin } from "../lib/model";
-import type { HttpResponse } from "@/lib/http-reponse";
+import type { ErrorTanstackQuery, HttpResponse } from "@/lib/http-reponse";
 import { useToast } from "@/hooks/use-toast";
 import { apiAuth } from "@/hooks/api-auth";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,8 @@ export default function useMutationLogin() {
 
       return response.data;
     },
-    onError: (error: any) => {
+    onError: (error: ErrorTanstackQuery) => {
+      console.log("err", error);
       const { message, name } = error?.response.data.error;
       toast({
         title: name,
@@ -57,7 +58,5 @@ export default function useMutationLogin() {
   return {
     login: mutateAsync,
     isPendingLogin: isPending,
-    isErrorLogin: isError,
-    isSuccessLogin: isSuccess,
   };
 }

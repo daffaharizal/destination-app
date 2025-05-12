@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { HttpResponse } from "@/lib/http-reponse";
+import type { ErrorTanstackQuery, HttpResponse } from "@/lib/http-reponse";
 import { useToast } from "@/hooks/use-toast";
 import { apiAuth } from "@/hooks/api-auth";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +13,6 @@ export default function useMutationRegister() {
   const { mutateAsync, isPending, isError, isSuccess } = useMutation({
     mutationKey: ["post-login"],
     mutationFn: async (payload: PayloadRegister) => {
-      console.log("payload reg: ", payload);
       const formData = new URLSearchParams();
       formData.append("email", payload.email);
       formData.append("username", payload.username);
@@ -31,7 +30,7 @@ export default function useMutationRegister() {
 
       return response.data;
     },
-    onError: (error: any) => {
+    onError: (error: ErrorTanstackQuery) => {
       const { message, name } = error?.response.data.error;
       toast({
         title: name,
@@ -59,7 +58,5 @@ export default function useMutationRegister() {
   return {
     register: mutateAsync,
     isPendingRegister: isPending,
-    isErrorRegister: isError,
-    isSuccessRegister: isSuccess,
   };
 }

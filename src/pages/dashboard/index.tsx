@@ -176,7 +176,6 @@ export default function DashboardPage() {
 
   const handleChangeFilter = (value: Option[]) => {
     setFilter(value);
-    console.log(value)
   };
 
   return (

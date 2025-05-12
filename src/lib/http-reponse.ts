@@ -23,3 +23,15 @@ export interface IPagination {
   pageCount: number;
   total: number;
 }
+
+export interface ErrorTanstackQuery {
+  response: {
+    data: {
+      error: {
+        message: string;
+        name: string;
+        status: number;
+      };
+    };
+  };
+}

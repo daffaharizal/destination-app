@@ -4,6 +4,7 @@ import MainLayout from "../pages/layout";
 import { CommentPage, DashboardPage, LoginPage, RegisterPage } from "./content";
 import ProtectedRoute from "@/pages/auth/components/protected-route";
 import RedirectIfAuthenticated from "@/pages/auth/components/redirect-if-authenticated";
+import AuthSuspense from "@/pages/auth/components/auth-suspense";
 
 const WithSuspense = (Component: React.ReactNode) => (
   <Suspense fallback={<div>Loading...</div>}>{Component}</Suspense>
@@ -40,7 +41,11 @@ const Router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: WithSuspense(<LoginPage />),
+        element: (
+          <Suspense fallback={<AuthSuspense />}>
+            <LoginPage />
+          </Suspense>
+        ),
       },
     ],
   },
@@ -50,7 +55,11 @@ const Router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: WithSuspense(<RegisterPage />),
+        element: (
+          <Suspense fallback={<AuthSuspense />}>
+            <RegisterPage />
+          </Suspense>
+        ),
       },
     ],
   },
