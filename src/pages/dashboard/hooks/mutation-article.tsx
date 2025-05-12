@@ -23,9 +23,9 @@ export default function useMutationArticle() {
 
   const { mutateAsync: deleteArticle, isPending: isPendingDelete } =
     useMutation({
-      mutationKey: ["/categories"],
-      mutationFn: (documentId) => {
-        return api.delete(`/categories/${documentId}`);
+      mutationKey: ["/articles"],
+      mutationFn: ({ documentId }: { documentId: string }) => {
+        return api.delete(`/articles/${documentId}`);
       },
     });
 

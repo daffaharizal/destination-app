@@ -29,6 +29,8 @@ import {
 import type { Option } from "@/components/molecules/multiple-selector";
 import MultipleSelector from "@/components/molecules/multiple-selector";
 import ArticleFormModal from "./components/article-form-modal";
+import ModalDelete from "@/components/molecules/modal-delete";
+import useMutationArticle from "./hooks/mutation-article";
 
 const FILTER_POPULATE: Option[] = [
   {
@@ -66,6 +68,9 @@ export default function DashboardPage() {
     isSuccess,
     refetchArticle,
   } = useArticlePaged(page, pageSize, filter);
+
+  const { addArticle, updateArticle, deleteArticle, isPending } =
+    useMutationArticle();
 
   useEffect(() => {
     refetchArticle();
@@ -184,11 +189,11 @@ export default function DashboardPage() {
   const handleAdd = () => {
     setSelectedArticle(null);
     setModalOpen(true);
-  }
+  };
 
   const handleSubmit = async (values: any) => {
     console.log("values art: ", values);
-  }
+  };
 
   return (
     <div className="rounded-xl border shadow-sm bg-white p-10 h-[95vh] overflow-auto">
@@ -252,9 +257,22 @@ export default function DashboardPage() {
                       <Button variant={"warning"} className="p-2">
                         <Pencil className="w-3 h-3 text-yellow-500" />
                       </Button>
-                      <Button variant={"danger"} className="p-2">
-                        <Trash2 className="w-3 h-3 text-red-500" />
-                      </Button>
+                      <ModalDelete
+                        title={`Delete Article "${doc.title}"?`}
+                        description="This action cannot be undone and the article will be permanently removed."
+                        onConfirm={() =>
+                          deleteArticle({
+                            documentId: doc.documentId,
+                          }).finally(() => {
+                            refetchArticle();
+                          })
+                        }
+                        trigger={
+                          <Button variant={"danger"} className="p-2">
+                            <Trash2 className="w-3 h-3 text-red-500" />
+                          </Button>
+                        }
+                      />
                     </TableCell>
                   </TableRow>
                 ))

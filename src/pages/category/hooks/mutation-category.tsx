@@ -24,7 +24,7 @@ export default function useMutationCategory() {
   const { mutateAsync: deleteCategory, isPending: isPendingDelete } =
     useMutation({
       mutationKey: ["/categories"],
-      mutationFn: (documentId) => {
+      mutationFn: ({ documentId }: { documentId: string }) => {
         return api.delete(`/categories/${documentId}`);
       },
     });
