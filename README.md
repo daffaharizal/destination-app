@@ -1,54 +1,118 @@
-# React + TypeScript + Vite
+# 🌍 Travel Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple yet powerful travel content platform built with React + Vite + TypeScript + Shadcn UI + Zod (Validation) + Tanstack Query. This project provides features such as article management, categorized content, comment sections, and user authentication.
 
-Currently, two official plugins are available:
+Netlify Access Link:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+https://travel-platform-dhf.netlify.app
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🚀 Features
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+- 🔐 **Authentication** (email/password based)
+- 📝 **Article Management (Filter by Searching and Select Multiple for Populate)**
+- 🗂️ **Category Management**
+- 💬 **Commenting Management**
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend Framework**: React 18 (Vite)
+- **State Management**: Redux Toolkit, React Hook Form, TanStack Query
+- **UI & Styling**: Tailwind CSS + Shadcn UI
+- **Form Validation**: Zod
+- **Utilities**: Axios, Tanstack Query, Lodash, Axios, clsx
+- **Build Tools**: Vite + TypeScript
+
+---
+
+## 🗂️ Folder Stucture
+
+The main source code is organized under the ./src directory with the following structure:
+
+src/
+│
+├── components/ # Komponen global: atom dan molecule
+│ ├── ui/ # Atom - input, button, dsb (berbasis Shadcn)
+│ └── [Reusable]/ # Molecule - kombinasi UI atom seperti form, card
+│
+├── pages/ # Per halaman atau fitur besar (Articles, Auth, dll)
+│ └── [page-name]/  
+│ ├── components/ # Komponen khusus halaman ini
+│ ├── hooks/ # Custom hook hanya untuk page ini
+│ └── lib/ # Helper, constant, service khusus page ini
+│
+├── routes/ # File routing dan `content.ts` untuk lazy loading
+│
+├── hooks/ # Global hooks, walau saat ini juga berisi helper dan fetching logic (butuh improvement)
+│
+├── lib/ # Global model, constant, dan konfigurasi lain (ex: axios, zod schemas)
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- Node.js ≥ 18.x.x
+- `npm` atau `yarn`
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/daffaharizal/destination-app
+```
+
+### 2. Installation Package
+
+```bash
+yarn install
+```
+
+OR
+
+```bash
+npm install
+```
+
+### 3. Create Environment Files
+
+Buat dua file berikut di root project:
+
+#### `.env.dev`
+
+```env
+NODE_ENV=development
+VITE_BASE_URL=https://extra-brooke-yeremiadio-46b2183e.koyeb.app/api
+```
+
+#### `.env.prod`
+
+```env
+NODE_ENV=production
+VITE_BASE_URL=https://extra-brooke-yeremiadio-46b2183e.koyeb.app/api
+```
+
+### 4. Running Project
+
+```bash
+yarn dev / npm run dev
+```
+
+### 5. Login Account
+
+#### `email:`
+
+```bash
+harizal.daffa46@gmail.com
+```
+
+#### `password: `
+
+```bash
+growupwithdatacakra46
 ```
