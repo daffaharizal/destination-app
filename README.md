@@ -34,23 +34,43 @@ https://travel-platform-dhf.netlify.app
 
 The main source code is organized under the ./src directory with the following structure:
 
-src/
-│
-├── components/ # Komponen global: atom dan molecule
-│ ├── ui/ # Atom - input, button, dsb (berbasis Shadcn)
-│ └── [Reusable]/ # Molecule - kombinasi UI atom seperti form, card
-│
-├── pages/ # Per halaman atau fitur besar (Articles, Auth, dll)
-│ └── [page-name]/  
-│ ├── components/ # Komponen khusus halaman ini
-│ ├── hooks/ # Custom hook hanya untuk page ini
-│ └── lib/ # Helper, constant, service khusus page ini
-│
-├── routes/ # File routing dan `content.ts` untuk lazy loading
-│
-├── hooks/ # Global hooks, walau saat ini juga berisi helper dan fetching logic (butuh improvement)
-│
-├── lib/ # Global model, constant, dan konfigurasi lain (ex: axios, zod schemas)
+### `/components` ( Global UI components)
+
+#### `/ui` --> Atomic components (atoms) e.g., Button, Input
+
+#### `/molecules` --> Reusable composed components (molecules)
+
+--
+
+### `/pages` (Route-based feature folders)
+
+#### `/[feature-name]/`
+
+#### `/[feature-name]/components` --> Page-specific components
+
+#### `/[feature-name]/hooks` --> Local hooks scoped to the feature
+
+#### `/[feature-name]/lib` --> Constants, models, utils for the feature
+
+--
+
+### `/lib` (Global constants, models, schema validations (Zod), API configs)
+
+#### `/[file].ts` --> E.g., useAuth, useDebounce, or fetch logic
+
+--
+
+### `/hooks` (Custom hooks for Global)
+
+#### `/[file].ts/.tsx` --> E.g., useAuth, useDebounce, or fetch logic
+
+--
+
+### `/routes` (Application routing configuration)
+
+#### `/content.ts` --> Lazy-loaded route components for optimization
+
+#### `/index.tsx` --> Main route setup using React Router
 
 ---
 
